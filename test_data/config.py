@@ -12,7 +12,7 @@ sex_cata = 'sdss_sex.cat'           #The sextractor catalogue which has
 clus_cata = 'sdss_r.cat'         #catalogue of galaxies from
                                       #online catalogu service
                                       #(name ra1 ra2 ra2 dec1 dec2 dec3)
-datadir = '/home/vinu/scripts/pymorph-github/test_data/'
+datadir = '/home/mverdugo/MyCodes/pymorph/test_data'
                        #the directory containing input images
                                        #if commented out, then program uses
                                        # current directory
@@ -21,7 +21,7 @@ datadir = '/home/vinu/scripts/pymorph-github/test_data/'
 out_cata = 'sdss_r_out.cat'      #catalogue of galaxies in the field
 rootname = 'r'
 
-outdir = '/home/vinu/scripts/pymorph-github/test_data/'
+outdir = './output'
                     #the directory containing output data
                                         #if commented out, then program uses
                                         # current directory
@@ -96,10 +96,10 @@ devauc = False # set to False to fit sersic bulge, set to true to fit devacouler
 fitting = [1, 1, 1]                    # = 0, Fix params at SExtractor value
 
 ###----Set the SExtractor and GALFIT path here----###
-GALFIT_PATH ='/home/vinu/software/galfit/galfit'
-SEX_PATH = '/home/vinu/software/sextractor-2.5.0/sex/bin/sex'
-PYMORPH_PATH = '/home/vinu/scripts/pymorph-github/pymorph'
-galfitv = '2.0.2'
+GALFIT_PATH ='/home/mverdugo/bin/galfit'
+SEX_PATH = '/home/mverdugo/bin/sex'
+PYMORPH_PATH = '/home/mverdugo/MyCodes/pymorph'
+galfitv = '3.0.5'
 
 ###----The following conditions are used to classify fit goo/bad----###
 chi2sq = 2.5                          #< chi2sq

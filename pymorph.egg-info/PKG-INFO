@@ -1,0 +1,21 @@
+Metadata-Version: 2.1
+Name: pymorph
+Version: 0.0.0
+Summary: Galaxy Models using SExtractor and GALFIT
+Home-page: UNKNOWN
+Author: Vinu Vikraman, Alan Meert
+Author-email: vvinuv@gmail.com
+License: BSD
+Description: This pipeline was written as a part of some projects on galaxy morphology by Vinu Vikraman and Alan Meert. Yogesh Wadadekar, Ajit Kembhavi, G V Vijayagovidan and Mariangela Bernardi were working on those projects. It REQUIRES SExtractor and GALFIT.
+Platform: Linux
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: Science/Research
+Classifier: Intended Audience :: Information Technology
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Scientific/Engineering :: Galaxy Analysis
+Classifier: Programming Language :: Python :: 3.6
+Description-Content-Type: text/markdown

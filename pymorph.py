@@ -1,5 +1,4 @@
-#!/data2/home/ameert/python/bin/python2.5
-#/usr/bin/python
+#!/usr/bin/env python
 
 """PyMorph [Py MOrphological Parameters' Hunter], is a pipeline to find the Morphological parameters of galaxy. Authors: Vinu Vikram , Yogesh Wadadekar, Ajit K. Kembhavi. 2008 Feb, Alan Meert 2010"""
 
@@ -19,23 +18,26 @@ configdir = '.'
 print 'configdir is : ', configdir
 sys.path.append(configdir)
 
+# Importing local configuration
 import config as c
-import pymorphutils as ut
-from flagfunc import GetFlag, isset, SetFlag
 
-from ellimaskfunc_easy import ElliMaskFunc
+# Importing PyMorph modules
+import pymorph.pymorphutils as ut
+from pymorph.flagfunc import GetFlag, isset, SetFlag
+
+from pymorph.ellimaskfunc_easy import ElliMaskFunc
 #from ellimaskfunc import ElliMaskFunc
 
-from maskfunc_easy import MaskFunc
+from pymorph.maskfunc_easy import MaskFunc
 #from maskfunc import MaskFunc
 
-from configfunc import ConfigFunc
-from config_twostep import ConfigIter
-from yetbackfunc import FindYetSky, RunSegSex
-from plotfunc import PlotFunc
-from runsexfunc import RunSex, SexShallow
-from writehtmlfunc import WriteParams
-    
+from pymorph.configfunc import ConfigFunc
+from pymorph.config_twostep import ConfigIter
+from pymorph.yetbackfunc import FindYetSky, RunSegSex
+from pymorph.plotfunc import PlotFunc
+from pymorph.runsexfunc import RunSex, SexShallow
+from pymorph.writehtmlfunc import WriteParams
+
 #from configiter import *
 #from configbarpoint import *
 #from configbulgedisk import *
@@ -65,7 +67,7 @@ def main():
         print "c.size[3] undefined"
         Square = 1
     try:
-        FracRad = c.size[2]  
+        FracRad = c.size[2]
     except:
         print "c.size[2] undefined"
         FracRad = 20
@@ -109,12 +111,12 @@ def main():
                 else:
                     print 'Weight file is not understood. Please include ' + \
                           'the word weight/rms to the weight file name. ' + \
-                          'If it is weight the rms will be found by 1/sqrt(w)' 
+                          'If it is weight the rms will be found by 1/sqrt(w)'
                 wht.close()
             else:
                print 'No weight image found\n'
-    
-    #Initializing psf array. ie. creating c.psflist from file 
+
+    #Initializing psf array. ie. creating c.psflist from file
     ut.PsfArr()
     if c.decompose:
         for psfelement in c.psflist:
@@ -128,7 +130,7 @@ def main():
         print "No model specified. Asuming bulge+disk model"
         ComP = ['bulge', 'disk']
     # Writing csvn header and findeing the output parameters
-    ParamToWrite = ut.PyMorphOutputParams(c.dbparams, c.decompose)    
+    ParamToWrite = ut.PyMorphOutputParams(c.dbparams, c.decompose)
     if exists('result.csv'):
         pass
     else:
@@ -142,9 +144,9 @@ def main():
 
     f_cat = open(out_cata, 'w')
     f_failed = open('restart.cat', 'w')
-    obj_file = open(os.path.join(c.datadir, clus_cata), 'r')  # The file contains the 
+    obj_file = open(os.path.join(c.datadir, clus_cata), 'r')  # The file contains the
                                                  # objects of interest
-    pnames = obj_file.readline().split() #The names of the parameters given 
+    pnames = obj_file.readline().split() #The names of the parameters given
                                          #in the first line in the clus_cata
 
     # writing a input catalogue (restart.cat) for failed objects
@@ -157,7 +159,7 @@ def main():
     for line_j in obj_file:
         # declare the flag
         c.Flag = 0
-        
+
         try:
             values = line_j.split()
             k = 0
@@ -169,7 +171,7 @@ def main():
             except:
                 print "no gal_id using gimg"
                 try:
-                    gal_id = pdb["gimg"].split('.')[0] #gal_id will be 
+                    gal_id = pdb["gimg"].split('.')[0] #gal_id will be
                                                        #filename without .fits
                 except:
                     print "No image or gal_id found in the object catalogue." \
@@ -221,7 +223,7 @@ def main():
                 print "No gimg given."
                 if exists(os.path.join(c.datadir, 'I' + c.fstring + '.fits')):
                     gimg = 'I' + c.fstring + '.fits'
-                elif exists(os.path.join(c.datadir, str(gal_id) + '.fits')): 
+                elif exists(os.path.join(c.datadir, str(gal_id) + '.fits')):
                     gimg = str(gal_id) + '.fits'
                 else:
                     print "No possible gimg found"
@@ -266,7 +268,7 @@ def main():
                     whtimage = 'W' + c.fstring + '.fits'
                 else:
                     cutimage = gimg
-                    whtimage = wimg                
+                    whtimage = wimg
             else:
                 cutimage = 'I' + c.fstring + '.fits'
                 whtimage = 'W' + c.fstring + '.fits'
@@ -375,7 +377,7 @@ def main():
                 if isset(CrashFitFlag, Get_FitFlag("FAKE_CNTR")):
                     c.center_deviated = 1
 
-            #The sextractor runs on the cutout before resizing to estimate 
+            #The sextractor runs on the cutout before resizing to estimate
             #shallow sky
             if(c.galcut == True):   #Given galaxy cutouts
                 if exists(sex_cata): #If the user provides sextractor catalogue
@@ -397,15 +399,15 @@ def main():
                                              # to printed directly
                         print "something bad happened (Sextractor)!!!!\n\n"
                         print traceback.print_exc()
-                        
-                        #print 'Problem running Sextractor (line no. 342)' 
+
+                        #print 'Problem running Sextractor (line no. 342)'
             if(alpha1 == -9999 or delta1 == -9999):
                 alpha_j = -9999
                 delta_j = -9999
             else:
                 alpha_j = ut.HMSToDeg(alpha1, alpha2, alpha3)
                 delta_j = ut.DMSToDeg(delta1, delta2, delta3)
-            # Determine Search Radius 
+            # Determine Search Radius
             try:
                 SearchRad = c.searchrad
             except:
@@ -433,7 +435,7 @@ def main():
             os.system('cp %s sex_%s.txt' %(sex_cata, c.fstring))
             center_distance = 999.0 #the distance from the center to the best target
             for line_s in open(sex_cata, 'r'):
-                
+
                 try:
                     values = line_s.split()
                     alpha_s = float(values[3])
@@ -444,13 +446,13 @@ def main():
                     sex_id = values[0]
                     xcntr  = float(values[1])
                     ycntr  = float(values[2])
-                    
+
                     if(abs(alpha_j - alpha_s) < SeaDeg and \
                        abs(delta_s - delta_j) < SeaDeg or \
                        abs(xcntr - ximg) < SeaPix and \
                        abs(ycntr - yimg) < SeaPix):
                         curr_distance = np.sqrt(np.min([(xcntr - ximg)**2+(ycntr - yimg)**2,(alpha_j - alpha_s)**2+(delta_s - delta_j)**2]))
-                        print "Candidate distance: %.3f" %curr_distance    
+                        print "Candidate distance: %.3f" %curr_distance
                         c.SexTargets +=1
                         if curr_distance < center_distance:
                             center_distance = curr_distance
@@ -467,9 +469,9 @@ def main():
                 # No suitable target found
                 print "NO TARGET FOUND!!!!"
                 good_object = ' 9999  9999 9999  9999 9999  9999 9999  9999 9999  9999 9999  0 9999  9999 9999  9999 9999 9999 9999\n'
-                c.Flag = SetFlag(c.Flag,GetFlag('NO_TARGET'))  
+                c.Flag = SetFlag(c.Flag,GetFlag('NO_TARGET'))
 
-            # now fit best object            
+            # now fit best object
             try:
                 values = good_object.split()
                 alpha_s = float(values[3])
@@ -483,7 +485,7 @@ def main():
                 print "SExtractor ID >>> ", values[0]
                 c.SexMagAuto = float(values[17])
                 c.SexMagAutoErr = float(values[18])
-                c.SexHalfRad = float(values[9]) #Sex halfrad 
+                c.SexHalfRad = float(values[9]) #Sex halfrad
                 c.SexPosAng = float(values[11])
                 c.pos_ang = ut.pa(float(values[11]))
                 c.axis_rat = 1.0 / float(values[12]) #axis ration b/a
@@ -529,9 +531,9 @@ def main():
                     skyval = UserGivenSky #using the sky supplied by the user
                 else:
                     skyval = c.SexSky #use the sky value from sextractor
-                    
+
                 if(alpha_j == -9999 or delta_j == -9999):
-                    if RaDecInfo: 
+                    if RaDecInfo:
                         alpha_j = alpha_s
                         delta_j = delta_s
                 ut.WriteError('\n\n###########   ' + str(gal_id) + \
@@ -546,11 +548,11 @@ def main():
                     c.Flag = SetFlag(c.Flag,GetFlag('FIT_DISK_CNTR'))
                 if c.fitting[2]:
                     c.Flag = SetFlag(c.Flag,GetFlag('FIT_SKY'))
-                
+
                 # Calculating the cutout size (half size).
                 # SizeX, SizeY return from MakeCutOut are full sizes
                 SizeX, SizeY = ut.FindCutSize(ReSize, VarSize, \
-                               Square, FracRad, c.size[4], TX/2, TY/2) 
+                               Square, FracRad, c.size[4], TX/2, TY/2)
                 print 'Calculated half sizes ', SizeX, SizeY
                 # Finding psf and the distance between psf and image
                 if c.decompose:
@@ -568,17 +570,17 @@ def main():
                             c.run = 0
                             break #Breaking the sextractor loop
                         # Sizes are total size
-                        try: 
+                        try:
                             cut_xcntr, cut_ycntr, SizeX, SizeY, \
                             ExceedSize = \
                             ut.MakeCutOut(xcntr, ycntr, alpha_j, \
                                     delta_j, SizeX, SizeY, \
-                                    TX, TY, cutimage, whtimage, ReSize) 
+                                    TX, TY, cutimage, whtimage, ReSize)
                         except:
                             ut.WriteError('Cutout exists!')
                             break
                     if c.galcut:
-                        if ReSize: 
+                        if ReSize:
                             if exists(cutimage):
                                 ut.WriteError('The file ' + cutimage +\
                                               ' exists\n')
@@ -606,7 +608,7 @@ def main():
                     # Runs sextractor to find the segmentation map
                     RunSegSex(os.path.join(c.datadir, cutimage))
 
-                    # This creates ellipse mask and used for 
+                    # This creates ellipse mask and used for
                     # ellipse fitting and casgm
                     ElliMaskFunc(cutimage, cut_xcntr, cut_ycntr, \
                                  SizeX, SizeY, good_object, 1)
@@ -645,13 +647,13 @@ def main():
                         c.SkyMin = SkyYet * 1.0
                         c.SkySig = SkySig * 1.0
                     else:
-                        c.SkyMin = c.SexSky * 1.0 
+                        c.SkyMin = c.SexSky * 1.0
                         c.SkySig = np.sqrt(np.abs(c.SexSky))
                     print 'Sky Sigma >>> ', c.SkySig
                     print 'SkyMin SexSky > ', c.SkyMin, c.SexSky
                 except:
                     ut.WriteError('Sky estimation failed\n')
-                # Estimate CASGM  
+                # Estimate CASGM
                 if(c.cas):
                     C, C_err, A, A_err, S, S_err, G, M = \
                     ut.HandleCasgm(cutimage, cut_xcntr, cut_ycntr, \
@@ -703,8 +705,8 @@ def main():
                         print "something bad happened (GALFIT)!!!!\n\n"
                         print traceback.print_exc()
 
-                
-                            
+
+
                     if(c.run == 1):
                         ut.WriteError('((((( Decomposition '\
                                           'Successful )))))\n')
@@ -712,7 +714,7 @@ def main():
                 try:
                     Goodness = -9999
                     if os.access('P_' + c.fstring + '.png', \
-                                 os.F_OK):	
+                                 os.F_OK):
                         os.remove('P_' + c.fstring + '.png')
                     GoodNess = PlotFunc(outimage, \
                                maskimage, cut_xcntr, cut_ycntr, \
@@ -722,9 +724,9 @@ def main():
                     ut.WriteError('Error in plotting \n')
                     if maskimage == 'None':
                         ut.WriteError('Could not find Mask image\n')
-                    c.run = 0	
+                    c.run = 0
                     c.Flag = SetFlag(c.Flag,GetFlag('PLOT_FAIL'))
-                
+
                 if isset(c.Flag, GetFlag("GALFIT_FAIL")): #or \
                    #isset(c.Flag, GetFlag("LARGE_CHISQ")) or \
                    #isset(c.Flag, GetFlag("FAKE_CNTR")) or \
@@ -736,7 +738,7 @@ def main():
                     f_failed.writelines([str(c.Flag), '\n'])
                 f_cat.writelines([str(gal_id), ' '])
                 f_cat.write(good_object)
-                #The following removes all the temporary files 
+                #The following removes all the temporary files
                 # after every fit
                 ToClean = 0
 
@@ -822,9 +824,9 @@ def selectpsf(ImG, CaT):
                    and float(values[14]) < 50.0:
                     xcntr = float(values[1]) - 1
                     ycntr = float(values[2]) - 1
-                    #size of the psf is 8 times the sigma assuming the star has 
+                    #size of the psf is 8 times the sigma assuming the star has
                     #Gaussian profile
-                    PsfSize = np.floor(float(values[14])) * c.starsize 
+                    PsfSize = np.floor(float(values[14])) * c.starsize
                     x1 = int(xcntr) + (PsfSize/2)
                     x2 = int(xcntr) - (PsfSize/2)
                     y1 = int(ycntr) + (PsfSize/2)
@@ -849,7 +851,7 @@ def selectpsf(ImG, CaT):
                     if ra3 < 10:
                         ra33 = '0' + (str(np.round(ra3, 1))[:3]).split('.')[0]\
                                       + \
-                                     (str(np.round(ra3, 1))[:3]).split('.')[1] 
+                                     (str(np.round(ra3, 1))[:3]).split('.')[1]
                     else:
                         ra33 = (str(np.round(ra3, 1))[:4]).split('.')[0] + \
                                (str(np.round(ra3, 1))[:4]).split('.')[1]
@@ -967,7 +969,7 @@ def selectpsf(ImG, CaT):
                     print 'The psf you have given is NOT exists!!!'
                     pass
                 write = raw_input("Do you REALLY need this psf? ('y' or," \
-                                  "'n' or press any key to continue) ") 
+                                  "'n' or press any key to continue) ")
                 if write == 'y':
                     TmpPsfList.append(element)
                     fff = open('psflist.list', 'ab')
@@ -996,7 +998,7 @@ def selectpsf(ImG, CaT):
                 except:
                     pass
             TmpPsfList = []
-            fi = raw_input("Finished? ('1' to finish, any other key to continue) ") 
+            fi = raw_input("Finished? ('1' to finish, any other key to continue) ")
             if fi == '0' or fi == '1':
                 finish = int(fi)
                 if finish == 1:
@@ -1141,9 +1143,9 @@ def run_test(option, opt, value, parser):
     if c.crashhandler:
         c.starthandle = 1
         os.system('mv restart.cat CRASH.CAT')
-        c.clus_cata = 'CRASH.CAT' 
+        c.clus_cata = 'CRASH.CAT'
         main()
-    
+
     sys.exit(0)
     return
 
@@ -1161,7 +1163,7 @@ if __name__ == '__main__':
     c.SEx_DEBLEND_MINCONT = 0.005
     c.SEx_PHOT_FLUXFRAC = 0.5
     c.SEx_PIXEL_SCALE = c.pixelscale
-    c.SEx_SEEING_FWHM = c.pixelscale * 3.37 
+    c.SEx_SEEING_FWHM = c.pixelscale * 3.37
     c.SEx_BACK_SIZE = 64
     c.SEx_BACK_FILTERSIZE = 3
     c.SEx_BACKPHOTO_TYPE = 'GLOBAL'
@@ -1192,17 +1194,17 @@ if __name__ == '__main__':
                     redshift = float(redshift)*1.0
                 except:
                     redshift = 9999
-            elif c.psfselect <= 2:   
-                try: 
+            elif c.psfselect <= 2:
+                try:
                     magmin = c.maglim[0]
-                    magmax = c.maglim[1] 
+                    magmax = c.maglim[1]
                     stargal = c.stargal
                     redshift = 9999
                 except:
                     magmin = 9999
                     magmax = -9999
                     stargal = 0.8
-                    redshift = 9999                  
+                    redshift = 9999
             NewClusCata = open(c.clus_cata,'w')
             if redshift == 9999:
                 NewClusCata.writelines(['gal_id ra1 dec1 mag\n'])
@@ -1232,7 +1234,7 @@ if __name__ == '__main__':
         else:
             pass
 
-    # Note I set defaults here and call them in creating the options. This is so 
+    # Note I set defaults here and call them in creating the options. This is so
     # I can use them in determining whether to retain the default or not.
 
     usage = "Usage: pymorph [--edit-conf[-e]] [--with-psf [-p]] [--force[-f]] "\
@@ -1241,19 +1243,19 @@ if __name__ == '__main__':
         "[--with-area]  [--no-mask] [--norm-mask] [--with-sg] [--bdbox] "\
         "[--bbox] [--dbox] [--test [-t]] [--devauc] [--outdir] [--datadir]"
     parser = OptionParser(usage=usage)
-    parser.add_option("-e", "--edit_conf", action="callback", 
-                      callback=run_SExtractorConf, 
+    parser.add_option("-e", "--edit_conf", action="callback",
+                      callback=run_SExtractorConf,
                       help="runs SExtractor configuration")
-    parser.add_option("-f", "--force", action="callback", 
+    parser.add_option("-f", "--force", action="callback",
                       callback=rm_sex_cata,
                       help="removes SExtractor catalog")
     parser.add_option("-p", "--with-psf", action="store", type="int",
                       dest="WhichPsf",default = 0,
                       help="Nearest/farthest PSF")
-    parser.add_option("-t", "--test", action="callback", callback=run_test, 
+    parser.add_option("-t", "--test", action="callback", callback=run_test,
                       type="string", help="runs the test instance-OVERRIDES ALL OTHER INPUT-User must supply a directory for output")
     parser.add_option("--lmag", action="store", type="float",
-                      dest="LMag",default = 500.0, 
+                      dest="LMag",default = 500.0,
                       help="lower magnitude cutoff")
     parser.add_option("--umag", action="store", type="float",
                       dest="UMag", default = -500.0,
@@ -1274,20 +1276,20 @@ if __name__ == '__main__':
                       dest="URd", default = 500.0, help="Upper Disk Radius")
     parser.add_option("--with-in", action="store", type="float",
                       dest="avoidme", default = 50.0, help="avoid me!")
-    parser.add_option("--with-filter", action="store", type="string", 
+    parser.add_option("--with-filter", action="store", type="string",
                       dest="Filter", default = 'UNKNOWN', help="Filter used")
     parser.add_option("--with-db", action="store", type="string",
-                       dest="database", default = 'UNKNOWN', 
+                       dest="database", default = 'UNKNOWN',
                       help="database used")
     parser.add_option("--with-area", action="store", type="float",
-                      dest="AreaOfObj", default = 40.0, 
+                      dest="AreaOfObj", default = 40.0,
                       help="min Area of psf for selection")
     parser.add_option("--no_mask", action="store_true", dest="NoMask",
                       default = False, help="turns off masking")
     parser.add_option("--norm_mask", action="store_true", dest="NormMask",
                       default = False, help="turns on Normal masking")
     parser.add_option("--with-sg", action="store", type="float",
-                      dest="StarGalProb", default = 0.9, 
+                      dest="StarGalProb", default = 0.9,
                       help="for psf identification")
     parser.add_option("--bdbox", action="store_true", dest="bdbox",
                       default = False, help="turns on bdbox")
@@ -1296,18 +1298,18 @@ if __name__ == '__main__':
     parser.add_option("--dbox", action="store_true", dest="dbox",
                       default = False, help="turns on dbox")
     parser.add_option("--devauc", action="store_true", dest="devauc",
-                      default = False, 
+                      default = False,
                       help="turns on DeVacouleur's bulge fitting (sersic index of bulge frozen at 4.0 for fit)")
     parser.add_option("-o","--outdir", action="store", type="string",
                       dest="outdir", default = os.getcwd()+'/',
                       help="path to directory that will contain all output. MUST end in '/'")
-    parser.add_option("-d","--datadir", action="store", dest="datadir", 
+    parser.add_option("-d","--datadir", action="store", dest="datadir",
                       type="string", default = os.getcwd()+'/',
                       help="path to directory containing all input. MUST end in '/'")
     parser.add_option("--with-host", action="store", type="string",
-                       dest="host", default = 'localhost', 
+                       dest="host", default = 'localhost',
                       help="mysql host used")
-    
+
     # parses command line aguments for pymorph
     (options, args) = parser.parse_args()
 
@@ -1327,7 +1329,7 @@ if __name__ == '__main__':
         c.FILTER = c.Filter
 
 
-    # now change dir to the 
+    # now change dir to the
     thisdir = os.getcwd()
     print "thisdir is ", thisdir
     print "outdir is ", c.outdir
@@ -1340,7 +1342,7 @@ if __name__ == '__main__':
             img.close()
             ut.CheckHeader(c.HeAdEr0)
     except IOError, (errno, strerror):
-        print imagefile, "I/O error(%s): %s" % (errno, strerror)
+        print c.imagefile, "I/O error(%s): %s" % (errno, strerror)
         os._exit(0)
 
     if exists(sex_cata):
@@ -1359,8 +1361,8 @@ if __name__ == '__main__':
 	    SexShallow(os.path.join(c.datadir, c.imagefile), 'None', 'None', 9999, 9999, 0)
     def runpsfselect():
         if(c.galcut):   #Given galaxy cutouts
-            obj_file = open(os.path.join(c.datadir, c.clus_cata),'r') 
-            pnames = obj_file.readline().split() 
+            obj_file = open(os.path.join(c.datadir, c.clus_cata),'r')
+            pnames = obj_file.readline().split()
             c.ValueS = []
             for v in pnames:
                 c.ValueS.append(v)
@@ -1421,7 +1423,7 @@ if __name__ == '__main__':
                     else:
                         c.SEx_GAIN = 1
                     GiMg.close()
-                    if exists(sex_cata): 
+                    if exists(sex_cata):
                         pass
                     else:
                         RunSex(os.path.join(c.datadir, gimg), os.path.join(c.datadir, wimg), 'None', 9999, 9999, 0)
@@ -1433,7 +1435,7 @@ if __name__ == '__main__':
                         os.remove(sex_cata)
                 except:
                     pass
-            obj_file.close()  
+            obj_file.close()
             AskForUpdate = raw_input("Do you want to update the clus_cata? " \
                             "('y' for yes) ")
             if AskForUpdate == 'y':
@@ -1457,7 +1459,7 @@ if __name__ == '__main__':
 #        if c.crashhandler:
 #            c.starthandle = 1
 #            os.system('mv restart.cat CRASH.CAT')
-#            c.clus_cata = 'CRASH.CAT' 
+#            c.clus_cata = 'CRASH.CAT'
 #            main()
 #New function for psfselect=2 non-interactive for webservice
     if c.psfselect == 2:
@@ -1471,7 +1473,7 @@ if __name__ == '__main__':
         if c.crashhandler:
             c.starthandle = 1
             os.system('mv restart.cat CRASH.CAT')
-            c.clus_cata = 'CRASH.CAT' 
+            c.clus_cata = 'CRASH.CAT'
             main()
 
 #The old function for psfselect=1
@@ -1485,7 +1487,7 @@ if __name__ == '__main__':
 #    elif c.psfselect == 1:
 #        c.Interactive = 0
 #        runpsfselect()
-        
+
 
 
 
@@ -1497,7 +1499,7 @@ if __name__ == '__main__':
         if c.crashhandler:
             c.starthandle = 1
             os.system('mv restart.cat CRASH.CAT')
-            c.clus_cata = 'CRASH.CAT' 
+            c.clus_cata = 'CRASH.CAT'
             main()
 
     os.chdir(thisdir)

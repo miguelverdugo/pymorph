@@ -1,0 +1,20 @@
+#   1 NUMBER                 Running object number                                     
+#   2 X_IMAGE                Object position along x                                    [pixel]
+#   3 Y_IMAGE                Object position along y                                    [pixel]
+#   4 ALPHA_SKY              Right ascension of barycenter (native)                     [deg]
+#   5 DELTA_SKY              Declination of barycenter (native)                         [deg]
+#   6 FLUX_ISO               Isophotal flux                                             [count]
+#   7 FLUXERR_ISO            RMS error for isophotal flux                               [count]
+#   8 MAG_ISO                Isophotal magnitude                                        [mag]
+#   9 MAGERR_ISO             RMS error for isophotal magnitude                          [mag]
+#  10 FLUX_RADIUS            Fraction-of-light radii                                    [pixel]
+#  11 BACKGROUND             Background at centroid position                            [count]
+#  12 THETA_IMAGE            Position angle (CCW/x)                                     [deg]
+#  13 ELONGATION             A_IMAGE/B_IMAGE                                           
+#  14 ISO0                   Isophotal area at level 0                                  [pixel**2]
+#  15 A_IMAGE                Profile RMS along major axis                               [pixel]
+#  16 FLAGS                  Extraction flags                                          
+#  17 CLASS_STAR             S/G classifier output                                     
+#  18 MAG_AUTO               Kron-like elliptical aperture magnitude                    [mag]
+#  19 MAGERR_AUTO            RMS error for AUTO magnitude                               [mag]
+         1     30.1882     30.1293   0.0000000  +0.0000000     436.7205      2.99041  18.6555   0.0074      3.316     2.633852 -23.28    1.283      409     4.152   0  0.009  18.6522   0.0076

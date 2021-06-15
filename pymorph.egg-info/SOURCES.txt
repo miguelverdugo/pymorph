@@ -1,0 +1,6 @@
+README.md
+setup.py
+pymorph.egg-info/PKG-INFO
+pymorph.egg-info/SOURCES.txt
+pymorph.egg-info/dependency_links.txt
+pymorph.egg-info/top_level.txt

@@ -1,0 +1,21 @@
+#   1 NUMBER                 Running object number                                     
+#   2 X_IMAGE                Object position along x                                    [pixel]
+#   3 Y_IMAGE                Object position along y                                    [pixel]
+#   4 ALPHA_SKY              Right ascension of barycenter (native)                     [deg]
+#   5 DELTA_SKY              Declination of barycenter (native)                         [deg]
+#   6 FLUX_ISO               Isophotal flux                                             [count]
+#   7 FLUXERR_ISO            RMS error for isophotal flux                               [count]
+#   8 MAG_ISO                Isophotal magnitude                                        [mag]
+#   9 MAGERR_ISO             RMS error for isophotal magnitude                          [mag]
+#  10 FLUX_RADIUS            Fraction-of-light radii                                    [pixel]
+#  11 BACKGROUND             Background at centroid position                            [count]
+#  12 THETA_IMAGE            Position angle (CCW/x)                                     [deg]
+#  13 ELONGATION             A_IMAGE/B_IMAGE                                           
+#  14 ISO0                   Isophotal area at level 0                                  [pixel**2]
+#  15 A_IMAGE                Profile RMS along major axis                               [pixel]
+#  16 FLAGS                  Extraction flags                                          
+#  17 CLASS_STAR             S/G classifier output                                     
+#  18 MAG_AUTO               Kron-like elliptical aperture magnitude                    [mag]
+#  19 MAGERR_AUTO            RMS error for AUTO magnitude                               [mag]
+#  20 VECTOR_ASSOC           ASSOCiated parameter vector                               
+         1     30.1765     30.1906   0.0000000  +0.0000000     463.4334     3.528673  18.5910   0.0083      3.450     2.633852 -26.57    1.301      678     4.831  16  0.034  18.6152   0.0080            1
